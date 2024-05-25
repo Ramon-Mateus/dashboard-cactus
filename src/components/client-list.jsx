@@ -32,17 +32,18 @@ export function ClientList() {
      useEffect(() => {
         const url = new URL('http://localhost:3333/findManyCliente/')
 
-        //url.searchParams.set('pageIndex', String(page - 1))
+        url.searchParams.set('pageIndex', String(page - 1))
 
         //if (search.length > 0) url.searchParams.set('query', search)
 
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-                setClients(JSON.parse(data))
+                console.log(JSON.parse(data.clientes))
+                setClients(JSON.parse(data.clientes))
+                setTotal(JSON.parse(data.total))
              })
-     }, [page, /*search*/])
+     }, [page/*,search*/])
 
     function setCurrentSearch(search) {
         const url = new URL(window.location.toString())
