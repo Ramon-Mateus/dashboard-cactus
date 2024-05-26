@@ -34,7 +34,7 @@ export function ClientList() {
 
         url.searchParams.set('pageIndex', String(page - 1))
 
-        //if (search.length > 0) url.searchParams.set('query', search)
+        if (search.length > 0) url.searchParams.set('query', search)
 
         fetch(url)
             .then(response => response.json())
@@ -43,7 +43,7 @@ export function ClientList() {
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
              })
-     }, [page/*,search*/])
+     }, [page, search])
 
     function setCurrentSearch(search) {
         const url = new URL(window.location.toString())
@@ -52,7 +52,7 @@ export function ClientList() {
 
         window.history.pushState({}, "", url)
 
-        setSearch(search)
+        setSearch(search.toUpperCase())
     }
 
     function setCurrentPage(page) {
@@ -98,11 +98,10 @@ export function ClientList() {
                         onChange={onSearchInputChaged}
                         value={search}
                         className='bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0'
-                        placeholder="Buscar cliente..."
+                        placeholder="Buscar pelo nome..."
                     />
                 </div>
             </div>
-
             <Table>
                 <thead>
                     <tr className='border-b border-white/10'>
