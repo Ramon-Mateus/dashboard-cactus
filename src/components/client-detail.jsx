@@ -1,11 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ClienteRow } from "./client-detail-row";
 
 export function ClientDetail() {
     const param = useParams();
     const [cliente, setClient] = useState({})
     const [id, setId] = useState(param.id)
-    
+
+    const data = new Date(cliente.conexaoInicial);
+    const dataFormatada = data.toLocaleString('pt-BR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+
     useEffect(() => {
         const url = new URL(`http://localhost:3333/findManyCliente/${id}`)
 
@@ -27,86 +43,26 @@ export function ClientDetail() {
                     </Link>
                 </div>
                 <div className='space-y-4'>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>ID:</span>
-                        <span className='text-gray-900'>{cliente.id}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Status Cliente:</span>
-                        <span className='text-gray-900'>{cliente.statusCliente ? 'Ativo' : 'Inativo'}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>IP Concentrador:</span>
-                        <span className='text-gray-900'>{cliente.ipConcentrador}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Nome Concentrador:</span>
-                        <span className='text-gray-900'>{cliente.nomeConcentrador}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Latitude Cliente:</span>
-                        <span className='text-gray-900'>{cliente.latitudeCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Longitude Cliente:</span>
-                        <span className='text-gray-900'>{cliente.longitudeCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Conexão Inicial:</span>
-                        <span className='text-gray-900'>{cliente.conexaoInicial}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Conexão Final:</span>
-                        <span className='text-gray-900'>{cliente.conexaoFinal}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Tempo Conectado:</span>
-                        <span className='text-gray-900'>{cliente.tempoConectado} minutos</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Consumo Download:</span>
-                        <span className='text-gray-900'>{cliente.consumoDownload} bytes</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Consumo Upload:</span>
-                        <span className='text-gray-900'>{cliente.consumoUpload} bytes</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Motivo Desconexão:</span>
-                        <span className='text-gray-900'>{cliente.motivoDesconexao}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>POP Cliente:</span>
-                        <span className='text-gray-900'>{cliente.popCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Nome Cliente:</span>
-                        <span className='text-gray-900'>{cliente.nomeCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Endereço Cliente:</span>
-                        <span className='text-gray-900'>{cliente.enderecoCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Bairro Cliente:</span>
-                        <span className='text-gray-900'>{cliente.bairroCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Cidade Cliente:</span>
-                        <span className='text-gray-900'>{cliente.cidadeCliente}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Plano Contrato:</span>
-                        <span className='text-gray-900'>{cliente.planoContrato}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Status Internet:</span>
-                        <span className='text-gray-900'>{cliente.statusInternet}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-medium text-gray-700'>Valor Plano:</span>
-                        <span className='text-gray-900'>R$ {cliente.valorPlano}</span>
-                    </div>
+                    <ClienteRow title="ID:" data={cliente.id} />
+                    <ClienteRow title="Status Cliente:" data={cliente.statusCliente ? 'Ativo' : 'Inativo'} />
+                    <ClienteRow title="Nome Cliente:" data={cliente.nomeCliente} />
+                    <ClienteRow title="Cidade Cliente:" data={cliente.cidadeCliente} />
+                    <ClienteRow title="Bairro Cliente:" data={cliente.bairroCliente} />
+                    <ClienteRow title="Endereço Cliente:" data={cliente.enderecoCliente == '' ? 'Não cadastrado' : cliente.enderecoCliente} />
+                    <ClienteRow title="Plano Contrato:" data={cliente.planoContrato} />
+                    <ClienteRow title="Valor Plano:" data={formatadorMoeda.format(cliente.valorPlano)} />
+                    <ClienteRow title="IP Concentrador:" data={cliente.ipConcentrador} />
+                    <ClienteRow title="Nome Concentrador:" data={cliente.nomeConcentrador} />
+                    <ClienteRow title="Consumo Download:" data={cliente.consumoDownload} />
+                    <ClienteRow title="Consumo Upload:" data={cliente.consumoUpload} />
+                    <ClienteRow title="Latitude Cliente:" data={cliente.latitudeCliente} />
+                    <ClienteRow title="Longitude Cliente:" data={cliente.longitudeCliente} />
+                    <ClienteRow title="Conexão Inicial:" data={dataFormatada} />
+                    <ClienteRow title="Conexão Final:" data={cliente.conexaoFinal ?? 'Não cadastrado'} />
+                    <ClienteRow title="Tempo Conectado:" data={cliente.tempoConectado} />
+                    <ClienteRow title="Motivo Desconexão:" data={cliente.motivoDesconexao == '' ? 'Não cadastrado' : cliente.motivoDesconexao} />
+                    <ClienteRow title="POP Cliente:" data={cliente.popCliente} />
+                    <ClienteRow title="Status Internet:" data={cliente.statusInternet} />
                 </div>
             </div>
         </div>

@@ -94,7 +94,7 @@ export function ClientList() {
             <div className="flex gap-3 items-center">
                 <h1 className="text-2xl font-bold" >Clientes</h1>
                 <div className="px-3 w-72 py-1.5 border border-black/40 rounded-lg text-sm flex items-center gap-3">
-                    <Search className='size-4 text-emerald-300' />
+                    <Search className='size-4 text-gray-900' />
                     <input 
                         onChange={onSearchInputChaged}
                         value={search}
@@ -119,7 +119,7 @@ export function ClientList() {
                 <tbody>
                     {clients.map((client) => {
                         return (
-                            <TableRow key={client.id} className='border-b border-black/40 hover:bg-white/40'>
+                            <TableRow key={client.id} className='border-b border-black/40'>
                                 <TableCell>
                                     <input type='checkbox' className='size-4 bg-black/20 rounded border border-black/40'/>
                                 </TableCell>
@@ -127,7 +127,6 @@ export function ClientList() {
                                 <TableCell>
                                     <div className='flex flex-col gap-1'>
                                         <span className='font-semibold text-gray-900'>{client.nomeCliente}</span>
-                                        <span>{client.valorPlano}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>{client.cidadeCliente}</TableCell>
