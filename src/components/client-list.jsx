@@ -135,7 +135,7 @@ export function ClientList() {
                                     {client.bairroCliente}
                                 </TableCell>
                                 <TableCell>
-                                    <Link to="cliente">
+                                    <Link to={`cliente/${client.id}`}>
                                         <IconButton transparent>
                                                 <MoreHorizontal className='size-4'/>
                                         </IconButton>

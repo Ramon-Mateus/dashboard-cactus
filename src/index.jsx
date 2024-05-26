@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { App } from './App';
-import { ClientList } from './components/client-detail';
+import { ClientDetail } from './components/client-detail';
 import reportWebVitals from './reportWebVitals';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -13,8 +13,8 @@ const router = createBrowserRouter([
     element: <App />
   },
   {
-    path: "cliente",
-    element: <ClientList />
+    path: "/cliente/:id",
+    element: <ClientDetail />
   }
 ])
 
