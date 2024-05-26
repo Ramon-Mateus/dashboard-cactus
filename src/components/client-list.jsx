@@ -5,6 +5,7 @@ import { TableHeader } from './table/table-header'
 import { TableCell } from './table/table-cell'
 import { TableRow } from './table/table-row'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export function ClientList() {
     const [search, setSearch] = useState(() => {
@@ -134,9 +135,11 @@ export function ClientList() {
                                     {client.bairroCliente}
                                 </TableCell>
                                 <TableCell>
-                                    <IconButton transparent>
-                                        <MoreHorizontal className='size-4'/>
-                                    </IconButton>
+                                    <Link to="cliente">
+                                        <IconButton transparent>
+                                                <MoreHorizontal className='size-4'/>
+                                        </IconButton>
+                                    </Link>
                                 </TableCell>
                             </TableRow>
                         )
