@@ -90,10 +90,10 @@ export function ClientList() {
     }
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 text-gray-900'>
             <div className="flex gap-3 items-center">
                 <h1 className="text-2xl font-bold" >Clientes</h1>
-                <div className="px-3 w-72 py-1.5 border border-white/10 rounded-lg text-sm flex items-center gap-3">
+                <div className="px-3 w-72 py-1.5 border border-black/40 rounded-lg text-sm flex items-center gap-3">
                     <Search className='size-4 text-emerald-300' />
                     <input 
                         onChange={onSearchInputChaged}
@@ -105,9 +105,9 @@ export function ClientList() {
             </div>
             <Table>
                 <thead>
-                    <tr className='border-b border-white/10'>
+                    <tr className='border-b border-black/40'>
                         <TableHeader style={{ width: 48 }}>
-                            <input type='checkbox' className='size-4 bg-black/20 rounded border border-white/10'/>
+                            <input type='checkbox' className='size-4 bg-black/20 rounded border border-black/40'/>
                         </TableHeader>
                         <TableHeader>Código</TableHeader>
                         <TableHeader>Cliente</TableHeader>
@@ -119,14 +119,14 @@ export function ClientList() {
                 <tbody>
                     {clients.map((client) => {
                         return (
-                            <TableRow key={client.id} className='border-b border-white/10 hover:bg-white/5'>
+                            <TableRow key={client.id} className='border-b border-black/40 hover:bg-white/40'>
                                 <TableCell>
-                                    <input type='checkbox' className='size-4 bg-black/20 rounded border border-white/10'/>
+                                    <input type='checkbox' className='size-4 bg-black/20 rounded border border-black/40'/>
                                 </TableCell>
                                 <TableCell>{client.id}</TableCell>
                                 <TableCell>
                                     <div className='flex flex-col gap-1'>
-                                        <span className='font-semibold text-white'>{client.nomeCliente}</span>
+                                        <span className='font-semibold text-gray-900'>{client.nomeCliente}</span>
                                         <span>{client.valorPlano}</span>
                                     </div>
                                 </TableCell>
@@ -150,7 +150,7 @@ export function ClientList() {
                         <TableCell colSpan={3}>
                             Mostrando {clients.length} de {total} itens
                         </TableCell>
-                        <td className='py-3 px-4 text-sm text-zinc-300 text-right' colSpan={3}>
+                        <td className='py-3 px-4 text-sm text-gray-900 text-right' colSpan={3}>
                             <div className='inline-flex items-center gap-8'>
                                 <span>Página {page} de {totalPages}</span>
 
