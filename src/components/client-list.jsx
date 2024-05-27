@@ -54,6 +54,9 @@ export function ClientList() {
         currency: 'BRL'
     });
 
+    const [mediaDown, setMediaDown] = useState(0)
+    const [mediaUp, setMediaUp] = useState(0)
+
      useEffect(() => {
         const url = new URL('http://localhost:3333/findManyCliente/')
 
@@ -66,12 +69,14 @@ export function ClientList() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data.avgPlanos._avg.valorPlano)
+                console.log(data.avgs._avg.valorPlano)
                 setStatusClientes([JSON.parse(data.clientesOnline), JSON.parse(data.clientesOffline)])
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
                 setCities(data.cidades)
-                setMediaPlanos(data.avgPlanos._avg.valorPlano)
+                setMediaPlanos(data.avgs._avg.valorPlano)
+                setMediaDown(data.avgs._avg.consumoDownload)
+                setMediaUp(data.avgs._avg.consumoUpload)
              })
      }, [page, search, selectedCity, id])
 
@@ -197,8 +202,19 @@ export function ClientList() {
                         <Circle className='text-red-600' /> {statusClientes[1]}
                     </p>
                 </div>
-                <div className='w-28'>
-                    <p>Média Planos: {formatadorMoeda.format(mediaPlanos.toFixed(2))}</p>
+                <div className="flex gap-2">
+                    <div className="flex flex-col items-center bg-gray-100 p-2 rounded-lg text-center border">
+                        <p className="text-sm font-semibold">Média Planos</p>
+                        <p className="text-xs">{formatadorMoeda.format(mediaPlanos.toFixed(2))}</p>
+                    </div>
+                    <div className="flex flex-col items-center bg-gray-100 p-2 rounded-lg text-center border">
+                        <p className="text-xs font-semibold">Média Download</p>
+                        <p className="text-xs">{(mediaDown / 1000000000).toFixed(2)} GB</p>
+                    </div>
+                    <div className="flex flex-col items-center bg-gray-100 p-2 rounded-lg text-center border">
+                        <p className="text-sm font-semibold">Média Upload</p>
+                        <p className="text-xs">{(mediaUp / 1000000000).toFixed(2)} GB</p>
+                    </div>
                 </div>
             </div>
             <Table>

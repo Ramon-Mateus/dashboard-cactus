@@ -6,7 +6,7 @@ export function Header() {
         <div className='flex items-center py-2'>
 
            <nav className='flex items-center gap-4'>
-                <img className="size-8" src={CactusLogo} />
+                <img src={CactusLogo} />
                 <NavLink href='/'>Dashboard de Clientes</NavLink>
            </nav>
 
