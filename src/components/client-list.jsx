@@ -38,6 +38,7 @@ export function ClientList() {
 
         return ''
     })
+    const [cities, setCities] = useState([])
 
      useEffect(() => {
         const url = new URL('http://localhost:3333/findManyCliente/')
@@ -50,10 +51,11 @@ export function ClientList() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(JSON.parse(data.clientesOnline))
+                console.log(data.cidades)
                 setStatusClientes([JSON.parse(data.clientesOnline), JSON.parse(data.clientesOffline)])
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
+                setCities(data.cidades)
              })
      }, [page, search, selectedCity])
 
@@ -64,7 +66,7 @@ export function ClientList() {
 
         window.history.pushState({}, "", url)
 
-        setSearch(search.toUpperCase())
+        setSearch(search)
     }
 
     function setCurrentCity(city) {
@@ -141,8 +143,11 @@ export function ClientList() {
                         className='bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0'
                     >
                         <option value="">Selecione a cidade</option>
-                        <option value="LINHARES">LINHARES</option>
-                        <option value="SOORETAMA">SOORETAMA</option>
+                        {cities.map((cidade) => {
+                            return ( 
+                                <option key={cidade.cidadeCliente} value={cidade.cidadeCliente}>{cidade.cidadeCliente}</option>
+                            )
+                        })}
                     </select>
                 </div>
                 <div className='font-semibold'>
@@ -157,23 +162,17 @@ export function ClientList() {
             <Table>
                 <thead>
                     <tr className='border-b border-black/40'>
-                        <TableHeader style={{ width: 48 }}>
-                            <input type='checkbox' className='size-4 bg-black/20 rounded border border-black/40'/>
-                        </TableHeader>
                         <TableHeader>Código</TableHeader>
                         <TableHeader>Cliente</TableHeader>
                         <TableHeader>Cidade</TableHeader>
                         <TableHeader>Bairro</TableHeader>
-                        <TableHeader style={{ width: 64 }}></TableHeader>
+                        <TableHeader style={{ width: 50 }}></TableHeader>
                     </tr>
                 </thead>
                 <tbody>
                     {clients.map((client) => {
                         return (
                             <TableRow key={client.id} className='border-b border-black/40'>
-                                <TableCell>
-                                    <input type='checkbox' className='size-4 bg-black/20 rounded border border-black/40'/>
-                                </TableCell>
                                 <TableCell>{client.id}</TableCell>
                                 <TableCell>
                                     <div className='flex flex-col gap-1'>
