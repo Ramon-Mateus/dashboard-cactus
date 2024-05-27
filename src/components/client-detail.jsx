@@ -44,7 +44,6 @@ export function ClientDetail() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(JSON.parse(data))
                 setClient(JSON.parse(data))
              })
      }, [id])

@@ -69,7 +69,6 @@ export function ClientList() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data.avgs._avg.valorPlano)
                 setStatusClientes([JSON.parse(data.clientesOnline), JSON.parse(data.clientesOffline)])
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
