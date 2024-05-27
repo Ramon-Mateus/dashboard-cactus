@@ -44,7 +44,7 @@ export function ClientDetail() {
                 </div>
                 <div className='space-y-4'>
                     <ClienteRow title="ID:" data={cliente.id} />
-                    <ClienteRow title="Status Cliente:" data={cliente.statusCliente ? 'Ativo' : 'Inativo'} />
+                    <ClienteRow title="Status Cliente:" data={cliente.statusCliente ? 'Online' : 'Offline'} />
                     <ClienteRow title="Nome Cliente:" data={cliente.nomeCliente} />
                     <ClienteRow title="Cidade Cliente:" data={cliente.cidadeCliente} />
                     <ClienteRow title="Bairro Cliente:" data={cliente.bairroCliente} />

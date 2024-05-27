@@ -1,4 +1,4 @@
-import { Search, MoreHorizontal, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-react'
+import { Search, MoreHorizontal, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, Circle } from 'lucide-react'
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
@@ -27,8 +27,17 @@ export function ClientList() {
 
         return 1
     })
-
     const [total, setTotal] = useState(0)
+    const [statusClientes, setStatusClientes] = useState([])
+    const [selectedCity, setSelectedCity] = useState(() => {
+        const url = new URL(window.location.toString())
+
+        if(url.searchParams.has('city')) {
+            return url.searchParams.get('city') ?? ''
+        }
+
+        return ''
+    })
 
      useEffect(() => {
         const url = new URL('http://localhost:3333/findManyCliente/')
@@ -36,15 +45,17 @@ export function ClientList() {
         url.searchParams.set('pageIndex', String(page - 1))
 
         if (search.length > 0) url.searchParams.set('query', search)
+        if (selectedCity) url.searchParams.set('city', selectedCity);
 
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(JSON.parse(data.clientes))
+                console.log(JSON.parse(data.clientesOnline))
+                setStatusClientes([JSON.parse(data.clientesOnline), JSON.parse(data.clientesOffline)])
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
              })
-     }, [page, search])
+     }, [page, search, selectedCity])
 
     function setCurrentSearch(search) {
         const url = new URL(window.location.toString())
@@ -55,6 +66,17 @@ export function ClientList() {
 
         setSearch(search.toUpperCase())
     }
+
+    function setCurrentCity(city) {
+        const url = new URL(window.location.toString())
+
+        url.searchParams.set('city', city)
+
+        window.history.pushState({}, "", url)
+
+        setSelectedCity(city)
+    }
+
 
     function setCurrentPage(page) {
         const url = new URL(window.location.toString())
@@ -69,6 +91,16 @@ export function ClientList() {
     function onSearchInputChaged(event) {
         setCurrentSearch(event.target.value)
         setCurrentPage(1)
+    }
+
+    function onSearchInputChaged(event) {
+        setCurrentSearch(event.target.value)
+        setCurrentPage(1)
+    }
+
+    function onCityChange(event) {
+        setCurrentCity(event.target.value);
+        setCurrentPage(1);
     }
 
     const totalPages = Math.ceil(total / 10)
@@ -101,6 +133,25 @@ export function ClientList() {
                         className='bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0'
                         placeholder="Buscar pelo nome..."
                     />
+                </div>
+                <div className="px-3 w-72 py-1.5 border border-black/40 rounded-lg text-sm flex items-center gap-3">
+                    <select
+                        value={selectedCity}
+                        onChange={onCityChange}
+                        className='bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0'
+                    >
+                        <option value="">Selecione a cidade</option>
+                        <option value="LINHARES">LINHARES</option>
+                        <option value="SOORETAMA">SOORETAMA</option>
+                    </select>
+                </div>
+                <div className='font-semibold'>
+                    <p className='flex gap-1'>
+                        <Circle className='text-green-600'/> {statusClientes[0]}
+                    </p>
+                    <p className='flex gap-1'>
+                        <Circle className='text-red-600' /> {statusClientes[1]}
+                    </p>
                 </div>
             </div>
             <Table>
