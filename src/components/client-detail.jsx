@@ -22,6 +22,16 @@ export function ClientDetail() {
         currency: 'BRL'
     });
 
+    const statusInternetMap = {
+        0: "Desconhecido",
+        1: "Ativo",
+        2: "Desativado",
+        3: "Bloqueio Manual",
+        4: "Bloqueio Automático",
+        5: "Financeiro em Atraso",
+        6: "Aguardando Assinatura"
+    };
+
     useEffect(() => {
         const url = new URL(`http://localhost:3333/findManyCliente/${id}`)
 
@@ -62,7 +72,7 @@ export function ClientDetail() {
                     <ClienteRow title="Tempo Conectado:" data={cliente.tempoConectado} />
                     <ClienteRow title="Motivo Desconexão:" data={cliente.motivoDesconexao == '' ? 'Não cadastrado' : cliente.motivoDesconexao} />
                     <ClienteRow title="POP Cliente:" data={cliente.popCliente} />
-                    <ClienteRow title="Status Internet:" data={cliente.statusInternet} />
+                    <ClienteRow title="Status Internet:" data={statusInternetMap[cliente.statusInternet]} />
                 </div>
             </div>
         </div>
