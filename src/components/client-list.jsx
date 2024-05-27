@@ -48,6 +48,11 @@ export function ClientList() {
 
         return ''
     })
+    const [mediaPlanos, setMediaPlanos] = useState(0)
+    const formatadorMoeda = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
 
      useEffect(() => {
         const url = new URL('http://localhost:3333/findManyCliente/')
@@ -61,11 +66,12 @@ export function ClientList() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data.cidades)
+                console.log(data.avgPlanos._avg.valorPlano)
                 setStatusClientes([JSON.parse(data.clientesOnline), JSON.parse(data.clientesOffline)])
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
                 setCities(data.cidades)
+                setMediaPlanos(data.avgPlanos._avg.valorPlano)
              })
      }, [page, search, selectedCity, id])
 
@@ -151,7 +157,6 @@ export function ClientList() {
     return (
         <div className='flex flex-col gap-4 text-gray-900'>
             <div className="flex gap-3 items-center">
-                <h1 className="text-2xl font-bold" >Clientes</h1>
                 <div className="px-3 w-72 py-1.5 border border-black/40 rounded-lg text-sm flex items-center gap-3">
                     <Search className='size-4 text-gray-900' />
                     <input 
@@ -191,6 +196,9 @@ export function ClientList() {
                     <p className='flex gap-1'>
                         <Circle className='text-red-600' /> {statusClientes[1]}
                     </p>
+                </div>
+                <div className='w-28'>
+                    <p>Média Planos: {formatadorMoeda.format(mediaPlanos.toFixed(2))}</p>
                 </div>
             </div>
             <Table>
