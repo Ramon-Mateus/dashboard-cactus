@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { ClienteRow } from "./client-detail-row";
 
 export function ClientDetail() {
     const param = useParams();
     const [cliente, setClient] = useState({})
-    const [id, setId] = useState(param.id)
+    const [id] = useState(param.id)
 
     const data = new Date(cliente.conexaoInicial);
     const dataFormatada = data.toLocaleString('pt-BR', {
@@ -32,6 +32,12 @@ export function ClientDetail() {
         6: "Aguardando Assinatura"
     };
 
+    const navigate = useNavigate();
+
+    const returnPage = () => {
+        navigate(-1)
+    }
+
     useEffect(() => {
         const url = new URL(`http://localhost:3333/findManyCliente/${id}`)
 
@@ -48,9 +54,9 @@ export function ClientDetail() {
             <div className='bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl'>
                 <div className='mb-4 flex flex-row justify-between'>
                     <h1 className='text-2xl font-bold text-gray-800'>Detalhes do Cliente</h1>
-                    <Link to='/' className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>
+                    <button onClick={returnPage} className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'>
                         Voltar para Home
-                    </Link>
+                    </button>
                 </div>
                 <div className='space-y-4'>
                     <ClienteRow title="ID:" data={cliente.id} />
