@@ -39,6 +39,15 @@ export function ClientList() {
         return ''
     })
     const [cities, setCities] = useState([])
+    const [id, setId] = useState(() => {
+        const url = new URL(window.location.toString())
+
+        if(url.searchParams.has('id')) {
+            return url.searchParams.get('id') ?? ''
+        }
+
+        return ''
+    })
 
      useEffect(() => {
         const url = new URL('http://localhost:3333/findManyCliente/')
@@ -46,7 +55,8 @@ export function ClientList() {
         url.searchParams.set('pageIndex', String(page - 1))
 
         if (search.length > 0) url.searchParams.set('query', search)
-        if (selectedCity) url.searchParams.set('city', selectedCity);
+        if (selectedCity.length > 0) url.searchParams.set('city', selectedCity)
+        if (id.length > 0) url.searchParams.set('id', id)
 
         fetch(url)
             .then(response => response.json())
@@ -57,7 +67,7 @@ export function ClientList() {
                 setTotal(JSON.parse(data.total))
                 setCities(data.cidades)
              })
-     }, [page, search, selectedCity])
+     }, [page, search, selectedCity, id])
 
     function setCurrentSearch(search) {
         const url = new URL(window.location.toString())
@@ -90,6 +100,16 @@ export function ClientList() {
         setPage(page)
     }
 
+    function setCurrentId(id) {
+        const url = new URL(window.location.toString())
+
+        url.searchParams.set('id', id)
+
+        window.history.pushState({}, "", url)
+
+        setId(id)
+    }
+
     function onSearchInputChaged(event) {
         setCurrentSearch(event.target.value)
         setCurrentPage(1)
@@ -102,6 +122,11 @@ export function ClientList() {
 
     function onCityChange(event) {
         setCurrentCity(event.target.value);
+        setCurrentPage(1);
+    }
+
+    function onIdInputChaged(event) {
+        setCurrentId(event.target.value);
         setCurrentPage(1);
     }
 
@@ -134,6 +159,15 @@ export function ClientList() {
                         value={search}
                         className='bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0'
                         placeholder="Buscar pelo nome..."
+                    />
+                </div>
+                <div className="px-3 w-72 py-1.5 border border-black/40 rounded-lg text-sm flex items-center gap-3">
+                    <Search className='size-4 text-gray-900' />
+                    <input 
+                        onChange={onIdInputChaged}
+                        value={id}
+                        className='bg-transparent flex-1 outline-none border-0 p-0 text-sm focus:ring-0'
+                        placeholder="Buscar pelo id..."
                     />
                 </div>
                 <div className="px-3 w-72 py-1.5 border border-black/40 rounded-lg text-sm flex items-center gap-3">
