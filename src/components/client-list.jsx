@@ -73,7 +73,10 @@ export function ClientList() {
                 setClients(JSON.parse(data.clientes))
                 setTotal(JSON.parse(data.total))
                 setCities(data.cidades)
-                setMediaPlanos(data.avgs._avg.valorPlano)
+                setMediaPlanos(() => {
+                    if(data.avgs._avg.valorPlano == null) return 0
+                    else return data.avgs._avg.valorPlano
+                })
                 setMediaDown(data.avgs._avg.consumoDownload)
                 setMediaUp(data.avgs._avg.consumoUpload)
              })
